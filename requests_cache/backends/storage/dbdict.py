@@ -6,6 +6,7 @@
 
     Dictionary-like objects for saving large data sets to `sqlite` database
 """
+from sys import version_info
 from collections import MutableMapping
 import sqlite3 as sqlite
 from contextlib import contextmanager
@@ -13,6 +14,18 @@ try:
     import threading
 except ImportError:
     import dummy_threading as threading
+
+if version_info.major < 3:
+    try:
+        import threading
+    except ImportError:
+        import dummy_threading as threading
+else:
+    try:
+        import _thread as threading
+    except ImportError:
+        import _dummy_thread as threading
+
 try:
     import cPickle as pickle
 except ImportError:
